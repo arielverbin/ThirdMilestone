@@ -1,0 +1,43 @@
+
+#ifndef THIRDMILESTONE_CLI_H
+#define THIRDMILESTONE_CLI_H
+#include <netinet/in.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
+#include <iostream>
+#include "../Command/Command.h"
+#include "../Command/UploadFiles.h"
+#include "../IO/DefaultIO.h"
+#include "../IO/StandardIO.h"
+#include "../IO/SocketIO.h"
+#include <vector>
+/**
+ * This class is responsible for way that the server communicates with the clients.
+ * This class is activated by ClientHandler, and determines what services the Server offers (Commands 1-7).
+ */
+class CLI {
+private:
+    /**
+     * @return the menu of commands that the CLI offers.
+     */
+    std::string getMenu() const;
+    //The method of communication with the client.
+    DefaultIO& io;
+    //The list of commands available.
+    std::vector<Command*> commands;
+public:
+    /**
+     * Constructor.
+     * @param defaultIo method of communication.
+     */
+    explicit CLI(DefaultIO& defaultIo);
+    /**
+     * Start the communication.
+     */
+    void start() const;
+};
+
+
+#endif //THIRDMILESTONE_CLI_H

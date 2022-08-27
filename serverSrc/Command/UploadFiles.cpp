@@ -1,4 +1,4 @@
-#include "UploadFiles.h";
+#include "UploadFiles.h"
 using namespace std;
 
 void UploadFiles::execute() {
@@ -12,4 +12,5 @@ void UploadFiles::execute() {
 
     defaultIO.send("Upload complete");
 
-};
+}
+UploadFiles::UploadFiles(DefaultIO& defaultIo) : Command(defaultIo){}
