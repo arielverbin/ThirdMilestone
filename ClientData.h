@@ -4,7 +4,7 @@
  * @brief a class that each client has. The clients use it to save their data.
  * 
  */
-class clientData {
+class ClientData {
     private:
     std::string trainFile;
     std::string testFile;
@@ -13,7 +13,7 @@ class clientData {
     // int** matrix;
 
     public:
-    clientData();
+    ClientData();
 
     //get and set for the test file.
     std::string getTestFile();
