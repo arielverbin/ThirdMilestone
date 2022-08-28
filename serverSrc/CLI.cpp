@@ -1,8 +1,13 @@
 
 #include "CLI.h"
+
 CLI::CLI(DefaultIO& io) : io(io) {
     commands.emplace_back(new UploadFiles(io));
-    //commands[1] = ... commands[2] = ...
+    commands.emplace_back(new SetParameters(io));
+    commands.emplace_back(new ClassifyData(io));
+    commands.emplace_back(new PrintClassifiedData(io));
+    commands.emplace_back(new SaveClassifiedData(io));
+    commands.emplace_back(new GetMatrix(io));
 }
 
 std::string CLI::getMenu() const{

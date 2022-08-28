@@ -1,18 +1,24 @@
-
 #ifndef THIRDMILESTONE_CLI_H
 #define THIRDMILESTONE_CLI_H
+
 #include <netinet/in.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <unistd.h>
 #include <iostream>
-#include "../Command/Command.h"
-#include "../Command/UploadFiles.h"
+#include "../Commands/Command.h"
+#include "../Commands/UploadFiles.h"
+#include "../Commands/ClassifyData.h"
+#include "../Commands/GetMatrix.h"
+#include "../Commands/PrintClassifiedData.h"
+#include "../Commands/SaveClassifiedData.h"
+#include "../Commands/SetParameters.h"
 #include "../IO/DefaultIO.h"
 #include "../IO/StandardIO.h"
 #include "../IO/SocketIO.h"
 #include <vector>
+
 /**
  * This class is responsible for way that the server communicates with the clients.
  * This class is activated by ClientHandler, and determines what services the Server offers (Commands 1-7).

@@ -42,7 +42,7 @@ void* Server::serveClient(void* clientHandler){
 
     DefaultIO& io = defaultIO;
     CLI cli(io);
-    ch.serveWith(cli); //serve the client via Command Line Interface.
+    ch.serveWith(cli); //serve the client via Commands Line Interface.
     // ClientHandler can serve with any class with "CLI::start" command. Therefore, CLI may become abstract if we
     // would want to support multiple types of serving.
     return nullptr; //delete the thread.

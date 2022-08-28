@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <iostream>
 #include <pthread.h>
+#include "../IO/DefaultIO.h"
+#include "../IO/SocketIO.h"
+#include "CLI.h"
 #include "ClientHandler.h"
 /**
  * Handles the acceptance of clients and send their socket fds to a CLI class.
