@@ -1,6 +1,6 @@
 #include "saveClassifiedData.h";
 using namespace std;
 
-void saveClassifiedData::execute() {
+void saveClassifiedData::execute(clientData cd) {
     
 };

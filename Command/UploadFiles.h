@@ -1,4 +1,5 @@
 #include "CommandAbstract.h"
+#include "clientData.h"
 #include <iostream>
 #include <fstream>
 
@@ -8,5 +9,7 @@
  */
 class UploadFiles : public CommandAbstract {
     public:
-        void execute() override;
+        UploadFiles();
+        void execute(clientData cd) override;
+        void save(clientData cd, string testFile, string trainFile);
 };

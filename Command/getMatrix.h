@@ -8,5 +8,5 @@
  */
 class getMatrix : public CommandAbstract {
     public:
-        void execute() override;
+        void execute(clientData cd) override;
 };

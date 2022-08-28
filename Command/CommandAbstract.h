@@ -1,4 +1,5 @@
 #include "DefaultIO.h"
+#include "clientData.h"
 
 /**
  * @brief the abstract class for the commands
@@ -12,6 +13,8 @@ class CommandAbstract {
         DefaultIO& defaultIO;
 
     public:
-        virtual void execute() = 0;
+        CommandAbstract();
+        virtual void execute(clientData cd) = 0;
+        std::string getDescription();
         
 };
