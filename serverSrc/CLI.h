@@ -31,6 +31,8 @@ private:
     std::string getMenu() const;
     //The method of communication with the client.
     DefaultIO& io;
+    //the CLI has access to the client data.
+    ClientData& clientData;
     //The list of commands available.
     std::vector<Command*> commands;
 public:
@@ -38,7 +40,7 @@ public:
      * Constructor.
      * @param defaultIo method of communication.
      */
-    explicit CLI(DefaultIO& defaultIo);
+    CLI(DefaultIO& defaultIo, ClientData& cd);
     /**
      * Start the communication.
      */

@@ -3,6 +3,7 @@
 #define THIRDMILESTONE_CLIENTHANDLER_H
 
 #include "CLI.h"
+#include "ClientData.h"
 #include "Server.h"
 /**
  * Starts communication between server and clients, via a CLI.
@@ -11,6 +12,7 @@ class ClientHandler {
 private:
     //The server that owns the ClientHandler (To which the client is connected to).
     Server* server;
+    ClientData clientData;
     //The client.
     int clientSocket;
 public:
@@ -33,6 +35,8 @@ public:
      * @return the socket fd of the client.
      */
     int getClientSock() const;
+
+    ClientData& getClientData();
 };
 
 

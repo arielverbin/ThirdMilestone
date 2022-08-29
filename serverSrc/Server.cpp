@@ -41,7 +41,7 @@ void* Server::serveClient(void* clientHandler){
     SocketIO defaultIO(ch.getClientSock()); //can be switched to another DefaultIO.
 
     DefaultIO& io = defaultIO;
-    CLI cli(io);
+    CLI cli(io, ch.getClientData());
     ch.serveWith(cli); //serve the client via Commands Line Interface.
     // ClientHandler can serve with any class with "CLI::start" command. Therefore, CLI may become abstract if we
     // would want to support multiple types of serving.
@@ -51,7 +51,7 @@ void* Server::serveClient(void* clientHandler){
 bool Server::acceptClients() {
     pthread_t id;
     bool timeout = false;
-    for(int i = 0; i < 5; i ++) { //while(!timeout)
+    for(int i = 0; i < 20; i ++) { //while(!timeout)
         if (numClients >= maxClients) {
             std::cout << "[!] Client acceptance is blocked until a disconnection occurs." << std::endl;
             while(numClients >= maxClients){}
@@ -68,7 +68,7 @@ bool Server::acceptClients() {
         }
         this->numClients++;
         std::cout << "# New client (" << clientSock << ") connected. "
-                             "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
+                                                       "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
 
         ClientHandler clientHandler{this, clientSock}; //serve the client.
         pthread_create(&id, nullptr, serveClient, &clientHandler); //serve the client via a new thread.
