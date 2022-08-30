@@ -5,6 +5,8 @@
 #include "../IO/DefaultIO.h"
 #include "../IO/StandardIO.h"
 #include "../IO/FileIO.h"
+#include <stack>
+#include <string>
 /**
  * Can analyze the server's instructions and execute them.
  */
@@ -14,7 +16,20 @@ private:
     DefaultIO& serverIO;
     //The communication method with the client.
     StandardIO screenIO;
+    //buffer
+    std::string buffer;
+    /**
+     * Converts the instructions received from the server as string, to a stack of instructions.
+     * FOR EXAMPLE: <hello>[this][is]<example> --TO--> [{<example>, [is], [this], <hello>}
+     * @param raw the message from the server.
+     * @return stack of instructions.
+     */
+    static std::stack<std::string> analyzeInstructions(std::string& raw);
 public:
+    /**
+     * Constructor.
+     * @param defaultIo the method of communication with the server.
+     */
     explicit CommandHandler(DefaultIO& defaultIo);
     /**
      * Handles the server's commands.

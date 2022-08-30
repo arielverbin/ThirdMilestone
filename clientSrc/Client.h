@@ -27,8 +27,10 @@ public:
     void connectTo(int serverPort);
     /**
      * Show the server's command options and communicate with the server.
+     * @return true if it was successful, false otherwise.
      */
-    void getService() const;
+    bool getService() const;
+    void disconnect();
 
 
 };

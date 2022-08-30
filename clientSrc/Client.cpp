@@ -3,16 +3,16 @@
 
 Client::Client() : connected(false), socket(-1){}
 
-void Client::connectTo(int serverPort) {
+bool Client::connectTo(int serverPort) {
     if (connected) {
         std::cout << "Already connected to a server." << std::endl;
-        return;
+        return false;
     }
     const char *ip_address = "127.0.0.1"; //connection between the device to itself;
     this->socket = ::socket(AF_INET, SOCK_STREAM, 0);
 
     if (socket < 0) { perror("Error creating socket.");
-        exit(1);
+        return false;
     }
     struct sockaddr_in sin{};
     memset(&sin, 0, sizeof(sin));
@@ -21,13 +21,20 @@ void Client::connectTo(int serverPort) {
     sin.sin_port = htons(serverPort);
 
     if (connect(socket, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        perror("Error connecting to server."); exit(1);
+        perror("Error connecting to server."); return false;
     }
     this->connected = true;
+    return true;
 }
 
 void Client::getService() const {
     SocketIO socketIo(socket);
     CommandHandler commandHandler(socketIo);
     commandHandler.handle();
+}
+
+void Client::disconnect() {
+    close(socket);
+    this->socket = -1;
+    this->connected = false;
 }
