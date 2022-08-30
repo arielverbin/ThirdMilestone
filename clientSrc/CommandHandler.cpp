@@ -4,7 +4,7 @@
 
 CommandHandler::CommandHandler(DefaultIO &defaultIo) : serverIO(defaultIo), screenIO() {}
 
-std::stack<std::string> CommandHandler::analyzeInstructions(std::string raw) {
+std::stack<std::string> CommandHandler::analyzeInstructions(std::string& raw) {
     std::stack<std::string> flipped;
     int current = 0, length;
     while (current < raw.size()) {
@@ -31,34 +31,33 @@ void CommandHandler::handle() {
         if(rawMessage == "<closed>") return; //Server closed.
         std::stack<std::string> instructions = analyzeInstructions(rawMessage);
         std::string curInstruction;
+
         while (!instructions.empty()) {
             curInstruction = instructions.top();
             if (curInstruction[0] == '<') {
-                buffer = curInstruction.substr(1, curInstruction.size() - 2);
-                continue;
+                buffer = curInstruction.substr(1, curInstruction.size() - 2); continue;
             }
             if (curInstruction == "[screen_print]") {
-                screenIO.send(buffer);
-                continue;
+                screenIO.send(buffer); continue;
             }
             if (curInstruction == "[screen_read]") {
-                buffer = screenIO.receive();
-                continue;
+                buffer = screenIO.receive(); continue;
             }
             if (curInstruction == "[file_input]") {
                 FileIO fileIo(screenIO.receive()); //get path.
                 buffer = fileIo.receive();
-                if(buffer == "<error>") {screenIO.send("Error: could not read from file."); break;}
+                if(buffer == "<error>") {screenIO.send("[!] Error: could not read from file."); break;}
                 continue;
             }
             if(curInstruction == "[file_output]") {
                 FileIO fileIo(screenIO.receive()); //get path.
-                if(!fileIo.send(buffer)) {screenIO.send("Error: could not send to file."); break;}
+                if(!fileIo.send(buffer)) {screenIO.send("[!] Error: could not send to file."); break;}
                 continue;
             }
             if (curInstruction == "[send_back]") {
-                serverIO.send(buffer);
+                serverIO.send(buffer); continue;
             }
+            screenIO.send("[!] Server sent: " + curInstruction +", which is not a recognized instruction.");
         }
     }
 }

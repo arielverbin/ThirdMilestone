@@ -24,12 +24,15 @@ public:
      * Connect to a server.
      * @param serverPort the server's port.
      */
-    void connectTo(int serverPort);
+    bool connectTo(int serverPort);
     /**
      * Show the server's command options and communicate with the server.
-     * @return true if it was successful, false otherwise.
+     * If the client isn't connected the method will do nothing.
      */
-    bool getService() const;
+    void getService() const;
+    /**
+     * Disconnects from server. (if the client isn't connected the method will do nothing).
+     */
     void disconnect();
 
 

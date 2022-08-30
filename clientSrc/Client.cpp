@@ -28,13 +28,17 @@ bool Client::connectTo(int serverPort) {
 }
 
 void Client::getService() const {
-    SocketIO socketIo(socket);
-    CommandHandler commandHandler(socketIo);
-    commandHandler.handle();
+    if(connected) {
+        SocketIO socketIo(socket);
+        CommandHandler commandHandler(socketIo);
+        commandHandler.handle();
+    }
 }
 
 void Client::disconnect() {
-    close(socket);
-    this->socket = -1;
-    this->connected = false;
+    if(connected) {
+        close(socket);
+        this->socket = -1;
+        this->connected = false;
+    }
 }

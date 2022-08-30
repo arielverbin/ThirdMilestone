@@ -16,7 +16,7 @@ private:
     DefaultIO& serverIO;
     //The communication method with the client.
     StandardIO screenIO;
-    //buffer
+    //buffer, used to store data for a short amount of time (while following the server's instructions).
     std::string buffer;
     /**
      * Converts the instructions received from the server as string, to a stack of instructions.
