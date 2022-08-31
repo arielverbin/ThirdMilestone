@@ -11,7 +11,7 @@
 class ClientHandler {
 private:
     //The server that owns the ClientHandler (To which the client is connected to).
-    Server* server;
+    void* server;
     ClientData clientData;
     //The client.
     int clientSocket;

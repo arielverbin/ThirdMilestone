@@ -13,6 +13,8 @@
 #include "../IO/SocketIO.h"
 #include "CLI.h"
 #include "ClientHandler.h"
+#include "Timeout.h"
+
 /**
  * Handles the acceptance of clients and send their socket fds to a CLI class.
  */
@@ -24,14 +26,15 @@ private:
     //address of socket.
     struct sockaddr_in socketAddress;
 
-    //Server socket fd, current amount fo clients.
-    int sock, numClients;
+    //Server socket fd, current amount fo clients, port of server.
+    int sock, numClients, port;
+    //vector of actives threads (their id's).
+    std::vector<pthread_t> threadsID;
 
     /**
      * Binds the new socket to a socket address.
-     * @param port the port (as part of the socket address).
      */
-    void bind(int port);
+    void bind();
 
     /**
      * Announce willingness to accept connections.
@@ -43,6 +46,12 @@ private:
      * @return status of thread (nullptr).
      */
     static void* serveClient(void* clientHandler);
+    /**
+     * Starts the timeout for the accept function.
+     * @param instance instance of class "Timeout"
+     * @return nullptr.
+     */
+    static void* startTimeout(void* instance);
 
 public:
     /**

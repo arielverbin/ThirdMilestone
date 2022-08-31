@@ -2,20 +2,20 @@
 
 pthread_mutex_t key; //mutex lock.
 
-Server::Server(int port, int maxClients) : socketAddress{}, maxClients(maxClients) {
+Server::Server(int port, int maxClients) : socketAddress{}, maxClients(maxClients), port(port) {
     this->numClients = 0;
     this->sock = socket(AF_INET, SOCK_STREAM, 0); //create a new socket - IPv4, TCP.
     if (this->sock < 0) {
         perror("Error creating socket for server.");
         exit(1);
     }
-    this->bind(port);
+    this->bind();
     this->listen();
 
     this->numClients = 0;
 }
 
-void Server::bind(const int port) {
+void Server::bind() {
     memset(&socketAddress, 0, sizeof(this->socketAddress));
     this->socketAddress.sin_family = AF_INET; //family (TCP)
     this->socketAddress.sin_addr.s_addr = INADDR_ANY;//IP - on our local machine.
@@ -47,11 +47,16 @@ void* Server::serveClient(void* clientHandler){
     // would want to support multiple types of serving.
     return nullptr; //delete the thread.
 }
-
+void* Server::startTimeout(void* instance){
+    Timeout *timeout = ((Timeout*) instance);
+    timeout->count();
+    return nullptr;
+}
 bool Server::acceptClients() {
-    pthread_t id;
-    bool timeout = false;
-    for(int i = 0; i < 20; i ++) { //while(!timeout)
+    pthread_t id, idOfTimeout;
+    Timeout timeout(15, port);
+
+    while(true){
         if (numClients >= maxClients) {
             std::cout << "[!] Client acceptance is blocked until a disconnection occurs." << std::endl;
             while(numClients >= maxClients){}
@@ -61,15 +66,24 @@ bool Server::acceptClients() {
         unsigned int addr_len = sizeof(client_sin);
 
         //wait until a client connects. then, create a new socket.
+        pthread_create(&idOfTimeout, nullptr, startTimeout, &timeout); //start timeout.
         int clientSock = accept(this->sock, (struct sockaddr *) &client_sin, &addr_len);
-        if (clientSock < 0) {
-            perror("Error accepting client.");
-            continue;
-        }
-        this->numClients++;
-        std::cout << "# New client (" << clientSock << ") connected. "
-                                                       "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
+        pthread_cancel(idOfTimeout); //cancel timeout because accept was finished.
 
+        if (clientSock < 0) { perror("[!] Error accepting"); continue;}
+
+        std::string identifier = SocketIO(clientSock).receive(); //identifying connection.
+        if(identifier == "<timeout>") {
+            std::cout << "[TIMEOUT] Clients can no longer connect." << std::endl;
+            close(clientSock); break;
+        } if(identifier == "<error>") {
+            std::cout  << "[!] Error identifying connection (Timeout restarted)." << std::endl; continue;}
+
+        //this is a client.
+        this->numClients++;
+        this->threadsID.emplace_back(id);
+        std::cout << "# New client (" << clientSock << ") connected. "
+                                      "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
         ClientHandler clientHandler{this, clientSock}; //serve the client.
         pthread_create(&id, nullptr, serveClient, &clientHandler); //serve the client via a new thread.
     }
@@ -77,7 +91,14 @@ bool Server::acceptClients() {
 }
 
 void Server::closeServer() const {
-    std::cout << "Closing server... Clients can no longer connect to the server." << std::endl;
+    if(numClients > 0) {
+        std::cout << "# Wait for active clients to finish..." << std::endl;
+        for (const pthread_t &id: threadsID) {
+            pthread_join(id, nullptr);
+        }
+        std::cout << "# The last client has disconnected.";
+    }
+    std::cout << "# Closing Server..." << std::endl;
     close(sock);
 }
 
