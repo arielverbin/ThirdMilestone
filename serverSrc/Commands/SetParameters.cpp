@@ -1,50 +1,48 @@
-#include "SetParameters.h";
+#include "SetParameters.h"
 #include <vector>
 #include <sstream>
+#include <stdexcept>
 
 using namespace std;
 
 SetParameters::SetParameters(DefaultIO &io) : Command(io, "algorithm settings") {}
 
-void SetParameters::execute(ClientData cd) {
-      //give the client instructions   
-    defaultIO.send("<The current KNN parameters are: K = " + std::to_string(cd.getK()) + 
-    ", distance metric = " + cd.getDistanceMetric()+">[screen_print][screen_read][send_back]");
-    
-    //get input fron the user
+void SetParameters::reportInvalidInput(const std::string &mes) {
+    defaultIO.send("<" + mes + ">" + "[screen_print][screen_read][send_back]");
+}
 
-    while(true){
-        string input = defaultIO.receive();
-        string enter;
-        enter.push_back('\n');
-        if (!input.compare(enter)){
-            //cut the input to K, matric
-            std::stringstream inputHelper(input);
-            std::string segment;
-            std::vector<std::string> seglist;
+bool SetParameters::execute(ClientData &cd) {
+    // Send current parameters and ask for input.
+    defaultIO.send("<# The current KNN parameters are: K = " + std::to_string(cd.getK()) +
+                   ", distance metric = " + cd.getDistanceMetric() + ">[screen_print][screen_read][send_back]");
 
-            while(std::getline(inputHelper, segment, ' '))
-            {
-            seglist.push_back(segment);
+    while (true) {
+        string input = defaultIO.receive(); if(input == "<error>") return false;
+        if (!input.empty()) {
+            size_t spaceChar = input.find(' ');
+            if (spaceChar == string::npos) {
+                reportInvalidInput("Invalid format. Use \"[1-10] [CHE|MAN|EUC].\""); continue;
             }
+            std::string newMetric = input.substr(spaceChar + 1); //metric method.
+            int newK; //k
 
-            int newK = stoi(seglist[0]);
-            string newMatric = seglist[1];
+            try {
+                newK = std::stoi(input.substr(0, spaceChar));
+            } catch (const std::invalid_argument & e) {
+                reportInvalidInput("Invalid value for K (not a number)."); continue;
+            }
 
             //check if the input is legal
-            if (newK >= 1 && newK <= 10){
-                if (newMatric.compare("CHE") || newMatric.compare("MAN") || newMatric.compare("EUC")){
+            if (newK >= 1 && newK <= 10) {
+                if (newMetric == "CHE" || newMetric == "MAN" || newMetric == "EUC") {
                     cd.setK(newK);
-                    cd.setDistanceMetric(newMatric);
+                    cd.setDistanceMetric(newMetric);
                     break;
+                } else {
+                    reportInvalidInput("Invalid value for Distance Metric."); continue;
                 }
-                else{
-                    defaultIO.send("<Invalid value for K>[screen_print][screen_read][send_back]");
-                }
-            }
-            else{
-                defaultIO.send("<Invalid value for distance matric>[screen_print][screen_read][send_back]");
-            }
-        }
+            } else { reportInvalidInput("Invalid value for K (must be in range 1-10)."); }
+        } else return true; //if the user pressed enter (only).
     }
-};
+    return true;
+}

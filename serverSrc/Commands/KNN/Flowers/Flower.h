@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string> // for string class
-#include"../Point.hpp"
+#include"../Point.h"
 
 //A Flower - a Point + type
 class Flower {
@@ -17,13 +17,13 @@ class Flower {
      * @param point set of values.
      * @param type of the flower.
      */
-    Flower(const Point &point, std::string type);
+    Flower(Point point, std::string type);
     /**
      * Constructor using a string representation.
      * @param str in form : "value,value,value,...,value,type".
      * @param numOfValues the number of values for the point.
      */
-    Flower(const std::string &str);
+    explicit Flower(const std::string &str);
     /**
      * @brief Get the Point object
      * 

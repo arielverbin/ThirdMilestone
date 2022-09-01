@@ -4,10 +4,13 @@ using namespace std;
 
 PrintClassifiedData::PrintClassifiedData(DefaultIO &io) : Command(io, "display results") {}
 
-void PrintClassifiedData::execute(ClientData cd) {
+bool PrintClassifiedData::execute(ClientData &cd) {
+    if(cd.getClassifiesFile() == "<empty>") {
+        defaultIO.send("<# Please Classify First.\n>[screen_print]");
+        return true;
+    }
+    defaultIO.send("<" + cd.getClassifiesFile() + ">[screen_print]");
 
-    defaultIO.send("<" + cd.getClassifies() + ">[screen_print]");
-       
-    defaultIO.send("<Done.>[screen_print]");
-        
-};
+    defaultIO.send("<# Done.>[screen_print]");
+    return true;
+}

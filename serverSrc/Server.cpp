@@ -2,8 +2,7 @@
 
 pthread_mutex_t key; //mutex lock.
 
-Server::Server(int port, int maxClients) : socketAddress{}, maxClients(maxClients), port(port) {
-    this->numClients = 0;
+Server::Server(int port, int maxClients) : socketAddress{}, maxClients(maxClients), port(port), timeoutPassed(false) {
     this->sock = socket(AF_INET, SOCK_STREAM, 0); //create a new socket - IPv4, TCP.
     if (this->sock < 0) {
         perror("Error creating socket for server.");
@@ -45,22 +44,16 @@ void* Server::serveClient(void* clientHandler){
     ch.serveWith(cli); //serve the client via Commands Line Interface.
     // ClientHandler can serve with any class with "CLI::start" command. Therefore, CLI may become abstract if we
     // would want to support multiple types of serving.
+    delete &ch;
     return nullptr; //delete the thread.
 }
-void* Server::startTimeout(void* instance){
-    Timeout *timeout = ((Timeout*) instance);
-    timeout->count();
-    return nullptr;
-}
+
 bool Server::acceptClients() {
+    timeoutPassed = false;
     pthread_t id, idOfTimeout;
-    Timeout timeout(15, port);
+    Timeout timeout(5, port, &timeoutPassed);
 
     while(true){
-        if (numClients >= maxClients) {
-            std::cout << "[!] Client acceptance is blocked until a disconnection occurs." << std::endl;
-            while(numClients >= maxClients){}
-        } //wait until new connections are available.
 
         struct sockaddr_in client_sin{}; //new socked address of new client.
         unsigned int addr_len = sizeof(client_sin);
@@ -72,33 +65,37 @@ bool Server::acceptClients() {
 
         if (clientSock < 0) { perror("[!] Error accepting"); continue;}
 
-        std::string identifier = SocketIO(clientSock).receive(); //identifying connection.
-        if(identifier == "<timeout>") {
+        if(timeoutPassed) {
             std::cout << "[TIMEOUT] Clients can no longer connect." << std::endl;
-            close(clientSock); break;
-        } if(identifier == "<error>") {
-            std::cout  << "[!] Error identifying connection (Timeout restarted)." << std::endl; continue;}
+            close(clientSock); this->closeServer(); break;
+        } else if(numClients == maxClients) {
+            std::cout << "[!] Client ("<< clientSock << ") is blocked due to max amount of Clients." << std::endl;
+            close(clientSock); continue;
+        }
 
         //this is a client.
+        this->timeoutPassed = false;
         this->numClients++;
-        this->threadsID.emplace_back(id);
         std::cout << "# New client (" << clientSock << ") connected. "
-                                      "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
-        ClientHandler clientHandler{this, clientSock}; //serve the client.
-        pthread_create(&id, nullptr, serveClient, &clientHandler); //serve the client via a new thread.
+                                                       "(Active Clients: " << this->getClientsStatus() << ")."<< std::endl;
+        auto* clientHandler = new ClientHandler{this, clientSock}; //serve the client.
+        pthread_create(&id, nullptr, serveClient, clientHandler); //serve the client via a new thread.
+        this->threadsID.emplace_back(id);
     }
     return true;
 }
 
 void Server::closeServer() const {
+    pthread_t id; int socket = sock;
+    pthread_create(&id, nullptr, blockNewClients, &socket); //block new connections.
     if(numClients > 0) {
-        std::cout << "# Wait for active clients to finish..." << std::endl;
-        for (const pthread_t &id: threadsID) {
-            pthread_join(id, nullptr);
+        std::cout << "# Waiting for "<< numClients <<" active clients to finish... " << std::endl;
+        for (const pthread_t &tid: threadsID) {
+            pthread_join(tid, nullptr);
         }
-        std::cout << "# The last client has disconnected.";
     }
     std::cout << "# Closing Server..." << std::endl;
+    pthread_cancel(id); //cancel blocking (not relevant anymore).
     close(sock);
 }
 
@@ -110,4 +107,20 @@ void Server::clientDisconnected() {
 
 std::string Server::getClientsStatus() const{
     return std::to_string(numClients) + "/" + std::to_string(maxClients);
+}
+
+void* Server::startTimeout(void* instance){
+    Timeout *timeout = ((Timeout*) instance);
+    timeout->count();
+    return nullptr;
+}
+
+void* Server::blockNewClients(void* sock) {
+    int socket = *(int*)sock;
+    while(true) {
+        struct sockaddr_in client_sin{}; //new socked address of new client.
+        unsigned int addr_len = sizeof(client_sin);
+        int clientSock = accept(socket, (struct sockaddr *) &client_sin, &addr_len);
+        close(clientSock);
+    }
 }

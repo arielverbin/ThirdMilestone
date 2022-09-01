@@ -16,8 +16,9 @@ class Timeout {
 private:
     const int seconds;
     const int serverPort;
+    bool* timeoutPassed;
 public:
-    Timeout(int seconds, int serverPort);
+    Timeout(int seconds, int serverPort, bool* timeoutPassed);
     void count();
 
 };

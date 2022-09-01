@@ -45,6 +45,8 @@ public:
      * Start the communication.
      */
     void start() const;
+
+    virtual ~CLI();
 };
 
 

@@ -21,7 +21,7 @@ bool Client::connectTo(int serverPort) {
     sin.sin_port = htons(serverPort);
 
     if (connect(socket, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        perror("Error connecting to server."); return false;
+        perror("[!] Error connecting to server"); return false;
     }
     this->connected = true;
     return true;

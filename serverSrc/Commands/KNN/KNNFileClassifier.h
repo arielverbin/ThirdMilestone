@@ -3,16 +3,16 @@
 #define ADVANCEDPROGRAMMING_KNNFILECLASSIFIER_H
 
 #include <string>
-#include "Flowers/Flower.hpp"
-#include "DistanceCalcs/DistanceCalculator.hpp"
-#include "KNNClassifier.hpp"
+#include "Flowers/Flower.h"
+#include "DistanceCalcs/DistanceCalculator.h"
+#include "KNNClassifier.h"
 /**
  * This class classifies a file of unclassified points and saves the output file in the given path.
  */
 class KNNFileClassifier {
 public:
 
-    explicit KNNFileClassifier();
+    explicit KNNFileClassifier() = default;
 
 
 

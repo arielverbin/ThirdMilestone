@@ -1,7 +1,9 @@
-#include "KNNClassifier.hpp"
+#include "KNNClassifier.h"
+
+#include <utility>
 
 //find the most popular type
-KNNClassifier::KNNClassifier(std::vector<Flower> const &data) : flowers(data) {
+KNNClassifier::KNNClassifier(std::vector<Flower> data) : flowers(std::move(data)) {
 }
 
 std::string KNNClassifier::findMajorityType(std::vector<Flower> &flowers) {

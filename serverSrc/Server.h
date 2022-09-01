@@ -8,7 +8,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <iostream>
-#include <pthread.h>
+#include "pthread.h"
 #include "../IO/DefaultIO.h"
 #include "../IO/SocketIO.h"
 #include "CLI.h"
@@ -31,6 +31,9 @@ private:
     //vector of actives threads (their id's).
     std::vector<pthread_t> threadsID;
 
+    //class Timeout will change this boolean, so we know not to serve the connection.
+    bool timeoutPassed;
+
     /**
      * Binds the new socket to a socket address.
      */
@@ -52,6 +55,12 @@ private:
      * @return nullptr.
      */
     static void* startTimeout(void* instance);
+    /**
+     * Accept new clients and close them immediately (used after timeout).
+     * @param sock socket of server.
+     * @return nothing.
+     */
+    static void* blockNewClients(void* sock);
 
 public:
     /**

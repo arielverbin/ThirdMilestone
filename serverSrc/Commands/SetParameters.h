@@ -10,10 +10,16 @@
  * 
  */
 class SetParameters : public Command {
+private:
+    /**
+     * Report to client that he gave invalid input (and ask him to send again).
+     * @param mes the message of invalid.
+     */
+    void reportInvalidInput(const std::string& mes);
 public:
     explicit SetParameters(DefaultIO &io);
 
-    void execute(ClientData cd) override;
+    bool execute(ClientData& cd) override;
 };
 
 #endif //THIRDMILESTONE_SERVERSRC_COMMANDS_SETPARAMETERS_H

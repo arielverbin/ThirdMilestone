@@ -1,17 +1,11 @@
-#include <iostream>
-#include "Point.hpp"
-#include "Flowers/Flower.hpp"
-#include "KNNClassifier.hpp"
-#include "DistanceCalcs/DistanceCalculator.hpp"
-#include <fstream>
-#include <utility>
+#include "Point.h"
+#include "Flowers/Flower.h"
+#include "KNNClassifier.h"
+#include "DistanceCalcs/DistanceCalculator.h"
 #include <vector>
-#include "KNNFileClassifier.hpp"
+#include "KNNFileClassifier.h"
 
 using namespace std;
-
-KNNFileClassifier::KNNFileClassifier(){}
-
 
 // std::vector<Flower> KNNFileClassifier::getDataFromFile(const std::string &fileName) {
 //     std::vector<Flower> l;

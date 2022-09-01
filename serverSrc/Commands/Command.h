@@ -22,13 +22,16 @@ public:
     /**
      * Execute the command.
      * @param cd the command has access to the client's data.
+     * @return true if the command was successful, false otherwise.
      */
-    virtual void execute(ClientData cd) = 0;
+    virtual bool execute(ClientData& cd) = 0;
 
     /**
      * @return the description of the command (what it does).
      */
     std::string getDescription();
+
+    virtual ~Command() = default;
 };
 
 #endif //THIRDMILESTONE_SERVERSRC_COMMANDS_COMMAND_H

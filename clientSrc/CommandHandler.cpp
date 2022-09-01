@@ -25,39 +25,63 @@ std::stack<std::string> CommandHandler::analyzeInstructions(std::string& raw) {
     return res;
 }
 
+void* CommandHandler::saveFile(void *args) {
+    char* got = (char*) args;
+    std::string input(got);
+    size_t sep = input.find('$');
+    FileIO fileIo(input.substr(0, sep)); //get path.
+    if(!fileIo.send(input.substr(sep + 1))){
+        std::cout << "[!] Error: could not send to file." << std::endl;
+    }
+    delete got;
+    return nullptr;
+}
+
 void CommandHandler::handle() {
     while(true) {
         std::string rawMessage = serverIO.receive();
-        if(rawMessage == "<closed>") return; //Server closed.
+        if(rawMessage == "<error>") return; //Server closed.
         std::stack<std::string> instructions = analyzeInstructions(rawMessage);
         std::string curInstruction;
 
         while (!instructions.empty()) {
             curInstruction = instructions.top();
+            instructions.pop();
             if (curInstruction[0] == '<') {
                 buffer = curInstruction.substr(1, curInstruction.size() - 2); continue;
             }
             if (curInstruction == "[screen_print]") {
-                screenIO.send(buffer); continue;
+                screenIO.send(buffer + "\n"); continue;
             }
             if (curInstruction == "[screen_read]") {
+                screenIO.send(">>>> ");
                 buffer = screenIO.receive(); continue;
             }
             if (curInstruction == "[file_input]") {
+                screenIO.send(">>>> ");
                 FileIO fileIo(screenIO.receive()); //get path.
                 buffer = fileIo.receive();
-                if(buffer == "<error>") {screenIO.send("[!] Error: could not read from file."); break;}
+                if(buffer == "<error>") {screenIO.send("[!] Error: could not read from file.\n"); break;}
                 continue;
             }
             if(curInstruction == "[file_output]") {
-                FileIO fileIo(screenIO.receive()); //get path.
-                if(!fileIo.send(buffer)) {screenIO.send("[!] Error: could not send to file."); break;}
+                pthread_t id;
+                std::string fileName = instructions.top(); instructions.pop();
+                fileName = fileName.substr(1, fileName.size() - 2); //"<file>" --TO--> "file"
+
+                screenIO.send(">>>> ");
+                std::string path = screenIO.receive() + "/" + fileName; //get path.
+                std::string str = path + "$" + buffer; //connect path to context of file.
+
+                char* toSend = new char[str.size() + 1];
+                str.copy(toSend, str.size(), 0);
+                pthread_create(&id, nullptr, saveFile, toSend);
                 continue;
             }
             if (curInstruction == "[send_back]") {
                 serverIO.send(buffer); continue;
             }
-            screenIO.send("[!] Server sent: " + curInstruction +", which is not a recognized instruction.");
+            screenIO.send("[!] Server sent: " + curInstruction +", which is not a recognized instruction.\n");
         }
     }
 }

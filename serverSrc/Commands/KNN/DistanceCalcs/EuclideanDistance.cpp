@@ -1,7 +1,7 @@
 
 #include <cmath>
 #include <stdexcept>
-#include "EuclideanDistance.hpp"
+#include "EuclideanDistance.h"
 
 double EuclideanDistance::calculate(const Point &p1, const Point &p2) {
     if(p1.getLength() != p2.getLength()) {

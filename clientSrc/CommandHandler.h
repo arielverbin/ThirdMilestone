@@ -7,6 +7,7 @@
 #include "../IO/FileIO.h"
 #include <stack>
 #include <string>
+#include "pthread.h"
 /**
  * Can analyze the server's instructions and execute them.
  */
@@ -25,6 +26,8 @@ private:
      * @return stack of instructions.
      */
     static std::stack<std::string> analyzeInstructions(std::string& raw);
+
+    static void* saveFile(void* args);
 public:
     /**
      * Constructor.

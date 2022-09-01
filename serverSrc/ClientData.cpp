@@ -1,12 +1,14 @@
 #include "ClientData.h"
 
-ClientData::ClientData() {
+#include <utility>
+
+ClientData::ClientData() : trainFile("<empty>"), testFile("<empty>"), classifiesFile("<empty>"){
     k = 5;
     distanceMetric = "EUC";
     confusionMatrix = nullptr;
 }
 
-std::string ClientData::getTestFile() {
+std::string& ClientData::getTestFile() {
     return testFile;
 }
 
@@ -15,7 +17,7 @@ void ClientData::setTestFile(std::string file1) {
 }
 
 
-std::string ClientData::getTrainFile() {
+std::string& ClientData::getTrainFile() {
     return trainFile;
 }
 
@@ -24,12 +26,12 @@ void ClientData::setTrainFile(std::string file2) {
 }
 
 
-std::string ClientData::getDistanceMetric() {
+std::string& ClientData::getDistanceMetric() {
     return distanceMetric;
 }
 
-void ClientData::setDistanceMetric(std::string newMatric) {
-    distanceMetric = std::move(newMatric);
+void ClientData::setDistanceMetric(std::string newMetric) {
+    distanceMetric = std::move(newMetric);
 }
 
 int ClientData::getK() const {
@@ -44,12 +46,12 @@ int **ClientData::getConfusionMatrix() {
     return confusionMatrix;
 }
 
-std::string ClientData::getClassifies() {
-    return classifies;
+std::string& ClientData::getClassifiesFile() {
+    return classifiesFile;
 }
 
-void ClientData::setClassifies(std::string classified1) {
-    classifies = std::move(classified1);
+void ClientData::setClassifiesFile(std::string classified1) {
+    classifiesFile = std::move(classified1);
 }
 
 void ClientData::setConfusionMatrix(int **matrix1) {

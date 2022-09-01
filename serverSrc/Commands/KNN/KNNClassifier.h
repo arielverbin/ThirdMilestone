@@ -2,9 +2,9 @@
 #define ADVANCEDPROGRAMMING_KNNCLASSIFIER_H
 
 #include <string>
-#include "Flowers/Flower.hpp"
-#include "DistanceCalcs/DistanceCalculator.hpp"
-#include "DistanceCalcs/DistanceCalculator.hpp"
+#include "Flowers/Flower.h"
+#include "DistanceCalcs/DistanceCalculator.h"
+#include "DistanceCalcs/DistanceCalculator.h"
 
 class KNNClassifier {
 
@@ -31,7 +31,7 @@ public:
       * Constructor.
       * @param flowers the vector of the data.
       */
-    explicit KNNClassifier(std::vector<Flower> const &data);
+    explicit KNNClassifier(std::vector<Flower> data);
 
     /**
      * @brief Get the Knn object - using "findMajorityType" function

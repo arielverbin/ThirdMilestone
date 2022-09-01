@@ -1,5 +1,5 @@
 
-#include "ManhattanDistance.hpp"
+#include "ManhattanDistance.h"
 #include <cmath>
 
 double ManhattanDistance::calculate(const Point &p1, const Point &p2) {

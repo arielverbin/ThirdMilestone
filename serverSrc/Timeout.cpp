@@ -1,12 +1,12 @@
 
 #include "Timeout.h"
 
-Timeout::Timeout(const int seconds, const int serverPort) : seconds(seconds), serverPort(serverPort){}
+Timeout::Timeout(const int seconds, const int serverPort, bool* timeoutPassed) :
+        seconds(seconds), serverPort(serverPort), timeoutPassed(timeoutPassed){}
 
 void Timeout::count() {
-    auto start = std::chrono::steady_clock::now();
-
     sleep(seconds);
+    (*timeoutPassed) = true;
     //cancel accept with creating a connection.
     const char *ip_address = "127.0.0.1"; //connection between the device to itself;
     int socket = ::socket(AF_INET, SOCK_STREAM, 0);
@@ -23,7 +23,5 @@ void Timeout::count() {
     if (connect(socket, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("[Timeout] Could not connect to server. Timeout is disabled."); return;
     }
-    SocketIO socketIo(socket);
-    socketIo.send("<timeout>");
     close(socket);
 }

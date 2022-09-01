@@ -2,6 +2,7 @@
 #define THIRDMILESTONE_SERVERSEC_CLIENTDATA_H
 
 #include <string>
+#include <vector>
 /**
  * @brief a class that each client has. The clients use it to save their data.
  * 
@@ -12,27 +13,27 @@ private:
     std::string testFile;
     int k;
     std::string distanceMetric;
-    std::string classifies;
+    std::string classifiesFile;
     int** confusionMatrix;
 
 public:
     ClientData();
 
     //get and set for the test file.
-    std::string getTestFile();
+    std::string& getTestFile();
     void setTestFile(std::string file);
 
     //get and set for the train file.
-    std::string getTrainFile();
+    std::string& getTrainFile();
     void setTrainFile(std::string file);
 
     //get and set for the distanceMetric.
-    std::string getDistanceMetric();
-    void setDistanceMetric(std::string newMatric);
+    std::string& getDistanceMetric();
+    void setDistanceMetric(std::string newMetric);
 
     //get and set for the classified points.
-    std::string getClassifies();
-    void setClassifies(std::string classified);
+    std::string& getClassifiesFile();
+    void setClassifiesFile(std::string classified);
 
     //get and set for the K.
     int getK() const;

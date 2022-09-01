@@ -3,7 +3,7 @@
 #define ADVANCEDPROGRAMMING_CHEBYSHEVDISTANCE_H
 
 
-#include "DistanceCalculator.hpp"
+#include "DistanceCalculator.h"
 /**
  * Distance Calculator using Chebyshev formula, which is d(p1,p2):=max{|p1.xi-p2.xi|} i=1,...,n.
  */
