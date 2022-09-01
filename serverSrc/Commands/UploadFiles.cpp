@@ -7,13 +7,13 @@ UploadFiles::UploadFiles(DefaultIO &io) : Command(io, "upload an unclassified cs
 
 void UploadFiles::execute(ClientData cd) {
     //give the client instructions
-    defaultIO.send("<Please upload your local train CSV file>[screen_print][screen_read][file_input]");
+    defaultIO.send("<Please upload your local train CSV file>[screen_print][screen_read][file_input][send_back]");
 
     string trainFile = defaultIO.receive();
     defaultIO.send("Upload complete");
 
     //give the client instructions
-    defaultIO.send("<Please upload your local test CSV file>[screen_print][screen_read][file_input]");
+    defaultIO.send("<Please upload your local test CSV file>[screen_print][screen_read][file_input][send_back]");
 
     string testFile = defaultIO.receive();
     defaultIO.send("Upload complete[screen_print]");

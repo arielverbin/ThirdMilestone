@@ -43,16 +43,16 @@ std::ostream& operator<<(std::ostream& os, Flower& a){
     return os;
 }
 
-// std::vector<Flower> Flower::toFlowers(std::string const &buffer, char c) {
-//     std::vector<Flower> vec;
-//     int start = 0;
-//     int end = (int)buffer.find(c);
-//     int i = 0;
-//     while (end != -1) {
-//         vec.emplace_back(Flower(buffer.substr(start, end - start)));
-//         i++;
-//         start = end + 1;
-//         end = (int)buffer.find(c, start);
-//     }
-//     return std::move(vec);
-// }
+std::vector<Flower> Flower::toFlowers(std::string const &buffer, char c) {
+    std::vector<Flower> vec;
+    int start = 0;
+    int end = (int)buffer.find(c);
+    int i = 0;
+    while (end != -1) {
+        vec.emplace_back(Flower(buffer.substr(start, end - start)));
+        i++;
+        start = end + 1;
+        end = (int)buffer.find(c, start);
+    }
+    return std::move(vec);
+}
