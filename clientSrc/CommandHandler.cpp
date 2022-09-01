@@ -61,7 +61,7 @@ void CommandHandler::handle() {
                 screenIO.send(">>>> ");
                 FileIO fileIo(screenIO.receive()); //get path.
                 buffer = fileIo.receive();
-                if(buffer == "<error>") {screenIO.send("[!] Error: could not read from file.\n"); break;}
+                if(buffer == "<error>") {screenIO.send("[!] Error: could not read from file.\n"); return;}
                 continue;
             }
             if(curInstruction == "[file_output]") {

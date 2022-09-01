@@ -7,7 +7,7 @@ CLI::CLI(DefaultIO &io, ClientData &cd) : io(io), clientData(cd) {
     commands.emplace_back(new ClassifyData(io));
     commands.emplace_back(new PrintClassifiedData(io));
     commands.emplace_back(new SaveClassifiedData(io));
-    //commands.emplace_back(new GetMatrix(io));
+    commands.emplace_back(new GetMatrix(io));
 }
 
 std::string CLI::getMenu() const {

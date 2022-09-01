@@ -51,7 +51,7 @@ void* Server::serveClient(void* clientHandler){
 bool Server::acceptClients() {
     timeoutPassed = false;
     pthread_t id, idOfTimeout;
-    Timeout timeout(5, port, &timeoutPassed);
+    Timeout timeout(60, port, &timeoutPassed);
 
     while(true){
 
