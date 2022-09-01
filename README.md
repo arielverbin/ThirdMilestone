@@ -26,14 +26,13 @@ We were given the chance to choose constant parameters such as Port number and B
 2. Open Terminal.
 3. Navigate to **serverSrc** using the command `cd path/to/your/project/`, and then `cd serverSrc`.
 4. Compile the server-side using the command `g++ *.cpp Commands/*.cpp ../IO/*.cpp Commands/KNN/*.cpp Commands/KNN/DistanceCalcs/*.cpp Commands/KNN/Flowers/*.cpp -std=c++11 -pthread` on your Terminal.
-5. A file named *a.out* should appeaar. Run `./a.out [port]` to run the program, where `[port]` is the number of port you want the server to be binded to. For example, run: `./a.out 5555`.
-6. Now, the Server should be running.
+5. A file named *a.out* should appear. Run `./a.out [port]` to run the program, where `[port]` is the number of port you want the server to be binded to. For example, run: `./a.out 5555`.
+6. Now, the Server should be running. Note that Timeout is ticking, so we recommend doing steps (7-9) before running the server.
 7. Open a **new** window of Terminal.
 8. Navigate to **clientSrc** using the command `cd path/to/your/project/`, and then `cd clientSrc`.
 9. Compile the client-side using the command `g++ *.cpp ../IO/*.cpp -std=c++11 -pthread` on your Terminal.
 10. A file named *a.out* should appear. Run `./a.out [port]` to run the client program, where `[port]` is the port that the server is binded to.
-11. Note that Timeout is ticking, so we recommend doing steps (7-9) before running the server.
 12. The client is now connected to the server, and you will see the server's menu.
 13. Of course, you can connect several clients at the same time.
 
-# Good Luck, and see on on October 23 😁
+# Good Luck 😁
