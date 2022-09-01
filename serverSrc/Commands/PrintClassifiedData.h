@@ -4,6 +4,7 @@
 #include "Command.h"
 #include <iostream>
 #include <fstream>
+#include "../KNN/Flowers/Flower.hpp"
 
 /**
  * @brief command 4 - print classified data to the screen.

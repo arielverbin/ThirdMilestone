@@ -15,6 +15,18 @@ public:
     explicit GetMatrix(DefaultIO &io);
 
     void execute(ClientData cd) override;
+
+    int** calculate(ClientData cd, float** decimalMatrix);
+
+    void toSend(ClientData cd, int** matrix, float** decimal);
+
+    int* countType(std::string string);
+
+    int** getTypeCountMatrix(ClientData cd);
+
+    void addToBiggestDecimal(float* decimal, int* matrix);
+
 };
+
 
 #endif //THIRDMILESTONE_SERVERSRC_COMMANDS_GETMATRIX_H

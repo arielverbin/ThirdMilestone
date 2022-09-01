@@ -4,6 +4,21 @@
 #include "Command.h"
 #include <iostream>
 #include <fstream>
+#include "../KNN/Point.hpp"
+#include "../KNN/Flowers/Flower.hpp"
+#include "../KNN/KNNClassifier.hpp"
+#include "../KNN/DistanceCalcs/ChebyshevDistance.hpp"
+#include "../KNN/DistanceCalcs/EuclideanDistance.hpp"
+#include "../KNN/DistanceCalcs/ManhattanDistance.hpp"
+#include "../KNN/DistanceCalcs/DistanceCalculator.hpp"
+#include "../KNN/KNNFileClassifier.hpp"
+
+
+
+
+
+
+
 
 /**
  * @brief command 3 - classify the data.
