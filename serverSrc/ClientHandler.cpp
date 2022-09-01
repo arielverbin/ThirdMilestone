@@ -10,9 +10,9 @@ void ClientHandler::serveWith(CLI& cli) const {
 
 void ClientHandler::disconnect() const {
     close(clientSocket);
-    server->clientDisconnected();
+    ((Server*)server)->clientDisconnected();
     std::cout << "Client (" << clientSocket << ") Disconnected. "
-                                               "(Active Clients: " << server->getClientsStatus() << ")" << std::endl;
+                                               "(Active Clients: " << ((Server*)server)->getClientsStatus() << ")" << std::endl;
 }
 
 int ClientHandler::getClientSock() const {return clientSocket;}

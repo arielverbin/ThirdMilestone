@@ -1,5 +1,7 @@
-#include <string>
+#ifndef THIRDMILESTONE_SERVERSEC_CLIENTDATA_H
+#define THIRDMILESTONE_SERVERSEC_CLIENTDATA_H
 
+#include <string>
 /**
  * @brief a class that each client has. The clients use it to save their data.
  * 
@@ -41,3 +43,4 @@ public:
     void setConfusionMatrix(int** matrix);
 
 };
+#endif //THIRDMILESTONE_SERVERSEC_CLIENTDATA_H
