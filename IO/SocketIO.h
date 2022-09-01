@@ -1,6 +1,3 @@
-//
-// Created by Ariel Verbin on 25/08/2022.
-//
 
 #ifndef THIRDMILESTONE_SOCKETIO_H
 #define THIRDMILESTONE_SOCKETIO_H

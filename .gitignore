@@ -1,2 +1,6 @@
 /CMakeLists.txt
 /cmake-build-debug/
+/clientSrc/a.out
+/serverSrc/a.out
+.DS_Store
+.vscode/settings.json

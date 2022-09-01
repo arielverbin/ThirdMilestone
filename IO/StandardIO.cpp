@@ -2,7 +2,7 @@
 #include "StandardIO.h"
 
 bool StandardIO::send(std::string message) {
-    std::cout << message << std::endl;
+    std::cout << message;
     return true;
 }
 std::string StandardIO::receive() {
