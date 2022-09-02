@@ -74,7 +74,8 @@ void CommandHandler::handle() {
                 std::string str = path + "$" + buffer; //connect path to context of file.
 
                 char* toSend = new char[str.size() + 1];
-                str.copy(toSend, str.size(), 0);
+                str.copy(toSend, str.size(), 0); toSend[str.size()] = '\0';
+
                 pthread_create(&id, nullptr, saveFile, toSend);
                 continue;
             }
