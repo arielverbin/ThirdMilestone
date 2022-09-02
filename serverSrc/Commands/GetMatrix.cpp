@@ -103,14 +103,14 @@ bool GetMatrix::execute(ClientData &cd) {
         }
     }
     cd.setConfusionMatrix("<\n"
-    "Iris-setosa    |\t" + std::to_string(result[0][0]) + "%\t\t" + std::to_string(result[0][1]) + "%\t\t" +
+    "Iris-setosa    |\t" + std::to_string(result[0][0]) + "%\t" + std::to_string(result[0][1]) + "%\t" +
     std::to_string(result[0][2]) + "%\n" +
-    "Iris-versicolor|\t" + std::to_string(result[1][0]) + "%\t\t" + std::to_string(result[1][1]) + "%\t\t" +
+    "Iris-versicolor|\t" + std::to_string(result[1][0]) + "%\t" + std::to_string(result[1][1]) + "%\t" +
     std::to_string(result[1][2]) + "%\n" +
-    "Iris-virginica |\t" + std::to_string(result[2][0]) + "%\t\t" + std::to_string(result[2][1]) + "%\t\t" +
+    "Iris-virginica |\t" + std::to_string(result[2][0]) + "%\t" + std::to_string(result[2][1]) + "%\t" +
     std::to_string(result[2][2]) + "%\n" +
     "               ---------------------------------------------------\n"
-    "               Iris-setosa\t" + "Iris-versicolor\t" + "Iris-virginica\n\n" +
+    "               Iris-setosa " + " Iris-versicolor " + " Iris-virginica\n\n" +
 
     "# K = " + std::to_string(cd.getK()) + "  Metric method = " + cd.getDistanceMetric() + "\n>");
 

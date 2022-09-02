@@ -15,15 +15,15 @@ std::string KNNClassifier::findMajorityType(std::vector<Flower> &flowers) {
         else return "<Error in classifying.>";
     }
     //finally, find:
-    if (array[0] > array[1]) {
-        if (array[0] > array[2]) {
+    if (array[0] > array[2]) {
+        if (array[0] > array[1]) {
             return "Iris-setosa";
         } else
-            return "Iris-virginica";
-    } else if (array[1] > array[2]) {
-        return "Iris-versicolor";
-    } else
+            return "Iris-versicolor";
+    } else if (array[2] > array[1]) {
         return "Iris-virginica";
+    } else
+        return "Iris-versicolor";
 }
 
 bool KNNClassifier::selection(const Point &point, int k, DistanceCalculator &dc) {
