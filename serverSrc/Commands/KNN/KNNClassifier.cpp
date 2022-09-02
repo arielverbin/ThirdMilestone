@@ -9,13 +9,10 @@ KNNClassifier::KNNClassifier(std::vector<Flower> data) : flowers(std::move(data)
 std::string KNNClassifier::findMajorityType(std::vector<Flower> &flowers) {
     int array[3] = {0, 0, 0};
     for (auto &flower: flowers) {
-        if (flower.getType() == "Iris-setosa") {
-            array[0]++;
-        } else if (flower.getType() == "Iris-versicolor") {
-            array[1]++;
-        } else {
-            array[2]++;
-        }
+        if (flower.getType() == "Iris-setosa") {array[0]++;}
+        else if (flower.getType() == "Iris-versicolor") {array[1]++;}
+        else if (flower.getType() == "Iris-virginica"){array[2]++;}
+        else return "<Error in classifying.>";
     }
     //finally, find:
     if (array[0] > array[1]) {
@@ -29,14 +26,16 @@ std::string KNNClassifier::findMajorityType(std::vector<Flower> &flowers) {
         return "Iris-virginica";
 }
 
-void KNNClassifier::selection(const Point &point, int k, DistanceCalculator &dc) {
+bool KNNClassifier::selection(const Point &point, int k, DistanceCalculator &dc) {
     //selection method.
     int minIndex;
     double minValue, curValue;
     for(int i = 0; i < k; i ++) {
         minValue = dc.calculate(point, flowers[i].getPoint());
+        if(minValue == -1) return false;
         for(int j = i+1; j< flowers.size(); j++){
             curValue = dc.calculate(point,flowers[j].getPoint());
+            if(curValue == -1) return false;
             if(curValue < minValue) {
                 minIndex = j;
                 minValue = curValue;
@@ -46,13 +45,13 @@ void KNNClassifier::selection(const Point &point, int k, DistanceCalculator &dc)
             }
         }
     }
-
+    return true;
 }
 
 //get the most popular type
 std::string KNNClassifier::classify(const Point &point, int k, DistanceCalculator &dc) {
 
-    this->selection(point, k , dc);
+    if(!this->selection(point, k , dc)) return "<Error in classifying.>";
 
     std::vector<Flower> vec;
     for (int i = 0; i < k; i++) vec.push_back(flowers[i]);

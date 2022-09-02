@@ -18,7 +18,7 @@ class Point {
     /**
      * @brief Construct a new Point object
      * 
-     * @param str 
+     * @param str a representation of the point. if the format is wrong then (0) point is created.
      */
     explicit Point(const std::string& str);
 

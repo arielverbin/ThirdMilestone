@@ -13,41 +13,43 @@
 #include "KNN/DistanceCalcs/ManhattanDistance.h"
 #include "KNN/DistanceCalcs/DistanceCalculator.h"
 #include "KNN/KNNFileClassifier.h"
+
 /**
  * @brief command 6 - calculate the confusion matrix.
  *
  */
 class GetMatrix : public Command {
 public:
-/**
- * @brief Get the Matrix object
- *
- * @param io
- */
+    /**
+    * @brief Get the Matrix object
+    *
+    * @param io reference to the method of communication.
+    */
     explicit GetMatrix(DefaultIO &io);
 
 
-/**
- * @brief call the calculate function and than to addToBiggestDecimal. At last it send the matrix as a string.
- *
- * @param cd
- */
-    bool execute(ClientData& cd) override;
+    /**
+     * @brief call the calculate function and than to addToBiggestDecimal. At last it send the matrix as a string.
+    *
+    * @param cd access to the client's data.
+     */
+    bool execute(ClientData &cd) override;
 
 private:
     /**
      * Fill amounts of points of class i, that was classified to be class j. i,j {1,2,3}.
-     * @param matrix the matrix to save there.
-     * @param test the j's (classed).
+     * @param matrix where to save the results.
+     * @param test the j's (classified).
      * @param toTest the i (actual).
      */
-    void fillCountTypeMatrix(int matrix[3][3], std::vector<Flower>& test, std::vector<Flower>& toTest);
+    static void fillCountTypeMatrix(int matrix[3][3], std::vector<Flower> &test, std::vector<Flower> &toTest);
+
     /**
      * Count how many of each type in the actuals.
-     * @param counts the array to save.
+     * @param counts the array to save the result.
      * @param test the actuals.
      */
-    void fillCountEachType(int* counts, std::vector<Flower>& test);
+    static void fillCountEachType(int *counts, std::vector<Flower> &test);
 
 };
 

@@ -21,7 +21,7 @@ bool SetParameters::execute(ClientData &cd) {
         if (!input.empty()) {
             size_t spaceChar = input.find(' ');
             if (spaceChar == string::npos) {
-                reportInvalidInput("Invalid format. Use \"[1-10] [CHE|MAN|EUC].\""); continue;
+                reportInvalidInput("# Invalid format. Use \"[1-10] [CHE|MAN|EUC].\""); continue;
             }
             std::string newMetric = input.substr(spaceChar + 1); //metric method.
             int newK; //k
@@ -29,7 +29,7 @@ bool SetParameters::execute(ClientData &cd) {
             try {
                 newK = std::stoi(input.substr(0, spaceChar));
             } catch (const std::invalid_argument & e) {
-                reportInvalidInput("Invalid value for K (not a number)."); continue;
+                reportInvalidInput("# Invalid value for K (not a number)."); continue;
             }
 
             //check if the input is legal
@@ -39,10 +39,12 @@ bool SetParameters::execute(ClientData &cd) {
                     cd.setDistanceMetric(newMetric);
                     break;
                 } else {
-                    reportInvalidInput("Invalid value for Distance Metric."); continue;
+                    reportInvalidInput("# Invalid value for Distance Metric."); continue;
                 }
-            } else { reportInvalidInput("Invalid value for K (must be in range 1-10)."); }
+            } else { reportInvalidInput("# Invalid value for K (must be in range 1-10)."); }
         } else return true; //if the user pressed enter (only).
     }
+    cd.setConfusionMatrix("<empty>"); //delete previous confusion matrix.
+    cd.setClassifiesFile("<empty>"); //delete previous classifieds.
     return true;
 }

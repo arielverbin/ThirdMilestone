@@ -7,14 +7,14 @@ UploadFiles::UploadFiles(DefaultIO &io) : Command(io, "upload an unclassified cs
 
 bool UploadFiles::execute(ClientData& cd) {
     //give the client instructions
-    defaultIO.send("<Please upload your local train CSV file>[screen_print][file_input][send_back]");
+    defaultIO.send("<# Please upload your local train CSV file...>[screen_print][file_input][send_back]");
 
     string trainFile = defaultIO.receive();
     if(trainFile == "<error>") return false;
     defaultIO.send("<# Upload Complete!\n>[screen_print]");
 
     //give the client instructions
-    defaultIO.send("<Please upload your local test CSV file>[screen_print][file_input][send_back]");
+    defaultIO.send("<# Please upload your local test CSV file...>[screen_print][file_input][send_back]");
 
     string testFile = defaultIO.receive();
     if(testFile == "<error>") return false;
@@ -29,6 +29,6 @@ void UploadFiles::save(ClientData& cd, std::string& testFile, std::string& train
     cd.setTestFile(std::move(testFile));
     cd.setTrainFile(std::move(trainFile));
     //reset relevant data:
-    cd.setConfusionMatrix(nullptr);
+    cd.setConfusionMatrix("<empty>");
     cd.setClassifiesFile("<empty>");
 }

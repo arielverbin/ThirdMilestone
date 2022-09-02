@@ -7,25 +7,6 @@
 
 using namespace std;
 
-// std::vector<Flower> KNNFileClassifier::getDataFromFile(const std::string &fileName) {
-//     std::vector<Flower> l;
-//     string line;
-//     ifstream input;
-//     input.open(fileName);
-//     if (input.fail()) {
-//         cout << "Could not open " << fileName << endl;
-//         input.close();
-//         throw std::exception();
-//     }
-//     while (!input.eof()) {
-//         getline(input, line);
-//         if (std::equal(line.begin(), line.end(), "")) continue; // avoid an empty line.
-//         l.emplace_back(Flower(line));
-//     }
-//     input.close();
-//     return l;
-// }
-
 std::vector<Flower> KNNFileClassifier::classifyAll(DistanceCalculator &dc, KNNClassifier &knn,
                                                    const std::vector<Point> &unclassifiedPoints, int k) {
     std::vector<Flower> classifiedPoints; //to be filled with the classified points.
@@ -34,6 +15,9 @@ std::vector<Flower> KNNFileClassifier::classifyAll(DistanceCalculator &dc, KNNCl
         //take the current point.
         classifiedPoints.emplace_back(Flower(curPoint, //classify it and create a new flower.
                                              knn.classify(curPoint, k, dc)));
+
+        if(classifiedPoints[classifiedPoints.size() - 1].getType() == "<Error in classifying.>")
+            return std::vector<Flower>{Flower(Point(std::vector<double>{0}),"<error>")};
     }
     return classifiedPoints;
 }

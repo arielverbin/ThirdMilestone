@@ -2,10 +2,11 @@
 
 #include <utility>
 
-ClientData::ClientData() : trainFile("<empty>"), testFile("<empty>"), classifiesFile("<empty>"){
+ClientData::ClientData() :
+                trainFile("<empty>"), testFile("<empty>"), classifiesFile("<empty>"),
+                confusionMatrix("<empty>"){
     k = 5;
     distanceMetric = "EUC";
-    confusionMatrix = nullptr;
 }
 
 std::string& ClientData::getTestFile() {
@@ -42,10 +43,6 @@ void ClientData::setK(int k1) {
     k = k1;
 }
 
-int **ClientData::getConfusionMatrix() {
-    return confusionMatrix;
-}
-
 std::string& ClientData::getClassifiesFile() {
     return classifiesFile;
 }
@@ -54,6 +51,10 @@ void ClientData::setClassifiesFile(std::string classified1) {
     classifiesFile = std::move(classified1);
 }
 
-void ClientData::setConfusionMatrix(int **matrix1) {
-    confusionMatrix = matrix1;
+void ClientData::setConfusionMatrix(std::string newMatrix) {
+    confusionMatrix = std::move(newMatrix);
+}
+
+std::string& ClientData::getConfusionMatrix() {
+    return confusionMatrix;
 }

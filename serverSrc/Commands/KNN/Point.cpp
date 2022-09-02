@@ -1,22 +1,28 @@
 #include "Point.h"
-
+#include <stdexcept>
 #include <utility>
 
 Point::Point(std::vector<double> d) : data(std::move(d)){
 }
 Point::Point(const std::string& str) {
-    std::vector<double> values;
-    int start = 0;
-    int end = (int)str.find(',');
-    int i = 0;
-    while (end != -1) {
+    try {
+        std::vector<double> values;
+        int start = 0;
+        int end = (int) str.find(',');
+        int i = 0;
+        while (end != -1) {
+            values.emplace_back(std::stod(str.substr(start, end - start)));
+            i++;
+            start = end + 1;
+            end = (int) str.find(',', start);
+        }
         values.emplace_back(std::stod(str.substr(start, end - start)));
-        i++;
-        start = end + 1;
-        end = (int)str.find(',', start);
+        data = values;
     }
-    values.emplace_back(std::stod(str.substr(start, end - start)));
-    data = values;
+    catch (std::invalid_argument& e) {
+        data.clear();
+        data.emplace_back(0); //default value (if the format of string is wrong)
+    }
 }
 double Point::get(int i) const {
     return data[i];

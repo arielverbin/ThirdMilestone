@@ -1,5 +1,6 @@
 
 #include "CLI.h"
+#include <stdexcept>
 
 CLI::CLI(DefaultIO &io, ClientData &cd) : io(io), clientData(cd) {
     commands.emplace_back(new UploadFiles(io));
@@ -23,8 +24,9 @@ void CLI::start() const {
     io.send("<" + this->getMenu() + ">" + "[screen_print][screen_read][send_back]");
     std::string raw = io.receive();
     if (raw == "<error>") return;
-
-    int commandRequest = std::stoi(raw);
+    int commandRequest;
+    try{commandRequest = std::stoi(raw);}
+    catch(std::invalid_argument& e) {io.send("<# " + std::string(e.what()) +">[screen_print]"); return;}
 
     while (commandRequest != commands.size() + 1) {
         if (!commands[commandRequest - 1]->execute(clientData))
@@ -33,7 +35,9 @@ void CLI::start() const {
         io.send("<" + this->getMenu() + ">" + "[screen_print][screen_read][send_back]");
         raw = io.receive();
         if (raw == "<error>") return;
-        commandRequest = std::stoi(raw);
+
+        try{commandRequest = std::stoi(raw);}
+        catch(std::invalid_argument& e) {io.send("<# " + std::string(e.what()) +">[screen_print]"); return;}
     }
 }
 CLI::~CLI() {

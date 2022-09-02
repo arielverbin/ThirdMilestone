@@ -22,8 +22,9 @@ private:
      * @param point the given point.
      * @param k the constant K.
      * @param dc the distance calculator.
+     * @return true if there were no problems. false otherwise.
      */
-    void selection(const Point &point, int k, DistanceCalculator& dc);
+    bool selection(const Point &point, int k, DistanceCalculator& dc);
 
 public:
 

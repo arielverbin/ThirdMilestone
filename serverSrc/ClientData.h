@@ -14,7 +14,7 @@ private:
     int k;
     std::string distanceMetric;
     std::string classifiesFile;
-    int** confusionMatrix;
+    std::string confusionMatrix;
 
 public:
     ClientData();
@@ -39,9 +39,9 @@ public:
     int getK() const;
     void setK(int k);
 
-    //get and set for the matrix.
-    int** getConfusionMatrix();
-    void setConfusionMatrix(int** matrix);
+    //get and set for the confusion matrix.
+    void setConfusionMatrix(std::string newMatrix);
+    std::string& getConfusionMatrix();
 
 };
 #endif //THIRDMILESTONE_SERVERSEC_CLIENTDATA_H

@@ -31,6 +31,10 @@ bool ClassifyData::execute(ClientData &cd) {
                                                                     classifiedPoints, //database
                                                                     distanceMetric); //metric
         delete distanceMetric;
+        if(classified[0].getType() == "<error>") {
+            defaultIO.send("<# Error in classifying. Try uploading different files.>[screen_print]");
+            return true;
+        }
         std::string stringClassified = Flower::toFileFormat(classified);
         cd.setClassifiesFile(stringClassified);
     }
