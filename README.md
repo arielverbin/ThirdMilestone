@@ -22,6 +22,8 @@ We were given the chance to choose constant parameters such as Port number and B
 
 * Port number: Just like in the previous assignment, we chose to give the user the option to choose a port. ([Jump to Running Instructions](#running-instructions)).
 
+* Max Amount of Clients: We chose to give the user the option to choose that constant. ([Jump to Running Instructions](#running-instructions)).
+
 ## Optimizations
 Since some commands are complicated to execute, we would like to avoid re-executing them. The solution is quite simple - the ClientData will save the results of some commands. As long as nothing might have caused those results to change (re-uploading the files or changing the KNN settings), the *ClientData* will keep storing them. Suppose that the client asks to classify the uploaded files. If the classifications stored in *ClientData* are not empty, the command will simply send the classifications from the *ClientData* to the client.  Because it means that the command was already executed. Otherwise, the command will classify the file and save the results on the *ClientData*. Re-uploading files and changing the KNN settings clears those results from the *ClientData*.
 
@@ -30,7 +32,7 @@ Since some commands are complicated to execute, we would like to avoid re-execut
 2. Open Terminal.
 3. Navigate to **serverSrc** using the command `cd path/to/your/project/`, and then `cd serverSrc`.
 4. Compile the server-side using the command `g++ *.cpp Commands/*.cpp ../IO/*.cpp Commands/KNN/*.cpp Commands/KNN/DistanceCalcs/*.cpp Commands/KNN/Flowers/*.cpp -std=c++11 -pthread` on your Terminal.
-5. A file named *a.out* should appear. Run `./a.out [port]` to run the program, where `[port]` is the number of port you want the server to be bound to. For example, run: `./a.out 5555`.
+5. A file named *a.out* should appear. Run `./a.out [port] [max_clients]` to run the program, where `[port]` is the number of port you want the server to be bound to, and `[max_clients]` is the maximum amount of clients the server can handle at the same time. For example, run: `./a.out 5555 20`.
 6. Now, the Server should be running. Note that Timeout is ticking, so we recommend doing steps (7-9) before running the server.
 7. Open a **new** window of Terminal.
 8. Navigate to **clientSrc** using the command `cd path/to/your/project/`, and then `cd clientSrc`.
